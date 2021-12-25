@@ -19,7 +19,9 @@ setup(
   license='Apache-2.0',
   keywords='prelude cryptography crypto ctf library programming',
   classifiers=[
-    "License :: OSI Approved :: Apache Software License 2.0 (Apache-2.0)",
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: Apache Software License",
+    "Topic :: Utilities",
   ],
   packages=find_packages('src'),
   package_dir={'': 'src'},

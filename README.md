@@ -9,8 +9,16 @@ from betterdicts import betterdict
 Works just like a dict, but has some extra useful methods:
 
 - invert()
+  
+  Inverts a mapping, turning values into keys and vice-versa.
+  
 - collate(it, type=list)
+
+  Collects repeated keys into sets or lists depending on the `type` argument.
+  
 - filter(keys=None, values=None)
+
+  Filters keys, values, or both.
 
 ## jsdict, njsdict, rjsdict
 
@@ -26,6 +34,23 @@ settings, or the like, where the `obj['key']` or `obj.get('key')` access method
 feels a bit overly verbose for the simple task at hand.
 
 ## number_dict
+
+Acts like a `collections.Counter()` with arithmetic support like a number.
+
+``` python-console
+>>> q = number_dict(range(5))
+>>> q
+{0: 1, 1: 1, 2: 1, 3: 1, 4: 1}
+>>> q[1] += 5
+>>> q[4] += 1
+>>> q[9]
+0
+>>> q[9] = 9
+>>> (q+1)**2
+{0: 4, 1: 49, 2: 4, 3: 4, 4: 9, 9: 100}
+>>> 1 / q
+{0: 1.0, 1: 0.16666666666666666, 2: 1.0, 3: 1.0, 4: 0.5, 9: 0.1111111111111111}
+```
 
 ## persistent_dict
 

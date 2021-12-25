@@ -27,5 +27,19 @@ feels a bit overly verbose for the simple task at hand.
 
 ## number_dict
 
-## autopickled_dict
+## persistent_dict
 
+The simplest possible persistent state exposed as a dict.
+
+This is for when you need something really simple to store some flat data
+between script invocations, without the extra management of databases or file
+formats or the like.
+
+Any change made directly to the dictionary[^1] causes it to save itself to disk
+as a pickle file. Whenever an instance is created of this dictionary it will
+load the same file.
+
+The file defaults to `cache.pickle` in the current working directory, but can be
+specified as a parameter with `persistent_dict(cache_file=<FILENAME>)`.
+
+[^1]: "deep" changes like to objects stored in the dictionary are not tracked

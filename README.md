@@ -19,6 +19,10 @@ Works just like a dict, but has some extra useful methods:
 - filter(keys=None, values=None)
 
   Filters keys, values, or both.
+  
+- map(keys=None, values=None)
+
+  Map keys, values, or both.
 
 ## jsdict, njsdict, rjsdict
 

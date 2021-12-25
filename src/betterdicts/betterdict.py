@@ -77,3 +77,15 @@ class betterdict(dict):
       k:v for k,v in self.items()
       if (keys is None or keys(k)) and (values is None or values(v))
     })
+
+  def map(self, keys=None, values=None):
+    """Map keys or values, returning a new dictionary.
+
+    """
+    if keys is None and values is None:
+      raise ValueError("specify one of keys or values to map")
+    if keys is None:
+      keys = lambda x: x
+    if values is None:
+      values = lambda x: x
+    return self.__class__({ keys(k): values(v) for k,v in self.items() })

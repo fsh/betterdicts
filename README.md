@@ -8,11 +8,11 @@ from betterdicts import betterdict
 
 Works just like a dict, but has some extra useful methods:
 
-- invert()
+- invert(collate=None)
   
   Inverts a mapping, turning values into keys and vice-versa.
   
-- collate(it, type=list)
+- collate(it, type=set)
 
   Collects repeated keys into sets or lists depending on the `type` argument.
   
@@ -20,7 +20,7 @@ Works just like a dict, but has some extra useful methods:
 
   Filters keys, values, or both.
   
-- map(keys=None, values=None)
+- map(keys=None, values=None, collate=None)
 
   Map keys, values, or both.
 

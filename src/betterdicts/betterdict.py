@@ -121,3 +121,6 @@ class betterdict(dict):
     if values is None:
       values = lambda x: x
     return self.__class__(((keys(k), values(v)) for k,v in self.items()), collate=collate)
+
+
+__all__ = ('betterdict',)

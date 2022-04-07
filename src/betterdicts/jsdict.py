@@ -69,3 +69,6 @@ class rjsdict(jsdict):
   """
   def __getattr__(self, key):
     return self.setdefault(key, rjsdict())
+
+
+__all__ = ('jsdict', 'njsdict', 'rjsdict',)

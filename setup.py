@@ -1,8 +1,9 @@
 
 from setuptools import setup, find_packages
 from pathlib import Path
+import ast
 
-VERSION = (Path(__file__).parent / 'src' / 'betterdicts' / 'VERSION').open('r').read().strip()
+VERSION = ast.literal_eval((Path(__file__).parent / 'src' / 'betterdicts' / 'VERSION.py').open('r').read().split('=')[1].strip())
 
 setup(
   name='betterdicts',
@@ -17,7 +18,7 @@ setup(
 
   url='https://gitlab.com/franksh/betterdicts',
   license='Apache-2.0',
-  keywords='prelude cryptography crypto ctf library programming',
+  keywords='prelude programming dict dictionary utility convenience',
   classifiers=[
     "Development Status :: 4 - Beta",
     "License :: OSI Approved :: Apache Software License",
@@ -26,9 +27,9 @@ setup(
   packages=find_packages('src'),
   package_dir={'': 'src'},
   python_requires='>=3.8',
-  zip_safe=False,
-  package_data={
-    'betterdicts': ['VERSION'],
-  },
-  include_package_data=True,
+  # zip_safe=False,
+  # package_data={
+  #   'betterdicts': ['VERSION'],
+  # },
+  # include_package_data=True,
 )

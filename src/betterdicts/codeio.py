@@ -1,5 +1,7 @@
 import io
 
+# This is all stupid. Will be replaced.
+
 class CodeIO(io.StringIO):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)

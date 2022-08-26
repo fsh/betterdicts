@@ -67,7 +67,7 @@ class betterdict(dict):
     """Inverts the dictionary, returning a mapping from values to keys.
 
     Note that duplicate values will be discarded if the mapping is not
-    one-to-one. Use ``invert_and_collect()`` or ``invert_and_collate()`` to
+    one-to-one. Use ``invert_and_collect()`` or ``invert_and_combine()`` to
     handle these cases.
 
     >>> betterdict(a=2).invert()
@@ -82,11 +82,27 @@ class betterdict(dict):
     """
     return self.__class__({v: k for k,v in self.items()})
 
-  def invert_and_collect(self, coll_type, **kwargs):
-    return self.__class__.collect(self.iter_inverted(), coll_type, **kwargs)
+  def invert_and_collect(self, coll_factory=set, add_action=None):
+    """Invert and collect keys mapping to the same values into collections.
 
-  def invert_and_collate(self, combine, **kwargs):
-    return self.__class__.collate(self.iter_inverted(), combine, **kwargs)
+    Functionally like ``cls.collect(type, obj.iter_inverted(), [add_action=...])``.
+
+    >>> d = betterdict({0: 'even', 1: 'odd', 2: 'even'})
+    >>> d.invert_and_collect(list)
+    {'even': [0, 2], 'odd': [1]}
+
+    The type defaults to ``set``.
+
+    """
+    return self.__class__.collect(coll_factory, self.iter_inverted(), add_action=add_action)
+
+  def invert_and_combine(self, func, initial=_MISSING):
+    """Invert and combine keys mapping to the same values.
+
+    Functionally like ``cls.collect(func, obj.iter_inverted(), [initial=...])``.
+
+    """
+    return self.__class__.combine(func, self.iter_inverted(), initial=initial)
 
   @hybridmethod
   def collect(self_or_cls, coll_factory, it=None, add_action=None):
@@ -311,12 +327,15 @@ class betterdict(dict):
 
     """
     if pairs is None:
-      if keys is None and values is None:
-        pairs = lambda _, v: bool(v)
-      elif keys is None:
+      if keys is not None:
+        if values is not None:
+          pairs = lambda k, v: keys(k) and values(v)
+        else:
+          pairs = lambda k, _: keys(k)
+      elif values is not None:
         pairs = lambda _, v: values(v)
       else:
-        pairs = lambda k, _: keys(k)
+        pairs = lambda _, v: bool(v)
     elif keys is not None or values is not None:
       raise ValueError("pairs=... cannot be combined with other filters")
 
@@ -362,20 +381,20 @@ class betterdict(dict):
 
     return self.__class__(pairs(k, v) for k, v in self.items())
 
-  def map_keys(self, func, combine=None):
+  def map_keys(self, func, combine_func=None, initial=_MISSING):
     """Equivalent to ``.map(keys=func)`` but with the option to collate."""
-    if combine is not None:
-      return self.__class__.collate(((func(k), v) for k, v in self.items()), combine)
+    if combine_func is not None:
+      return self.__class__.combine(combine_func, ((func(k), v) for k, v in self.items()), initial=initial)
     return self.map(keys=func)
 
   def map_values(self, func):
     """Equivalent to ``.map(values=func)``."""
     return self.map(values=func)
 
-  def map_pairs(self, func, combine=None):
+  def map_pairs(self, func, combine_func=None, initial=_MISSING):
     """Equivalent to ``.map(pairs=func)`` but with the option to collate."""
-    if combine is not None:
-      return self.__class__.collate((func(k, v) for k, v in self.items()), combine)
+    if combine_func is not None:
+      return self.__class__.combine(combine_func, (func(k, v) for k, v in self.items()), initial=initial)
     return self.map(pairs=func)
 
   def copy(self):

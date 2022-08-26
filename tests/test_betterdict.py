@@ -42,6 +42,17 @@ def test_invert(d):
   assert d.invert() == {'zero': 0, 'even': 2, 'odd': 3}
   assert d.invert().invert() == d
 
+  d[0] = 'even'
+  assert d.invert().invert() != d
+
+  assert d.invert_and_collect(set) == {'even': {0, 2}, 'odd': {3}}
+
+  def strsort(*args):
+    return ''.join(sorted(map(str, args)))
+
+  assert d.invert_and_combine(strsort) == {'even': '02', 'odd': 3}
+  assert d.invert_and_combine(strsort, 0) == {'even': '002', 'odd': '03'}
+
 def test_update(d):
   assert d.update(foo='A', bar='B') is d
   assert d['bar'] == 'B'

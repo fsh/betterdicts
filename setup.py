@@ -18,7 +18,7 @@ setup(
 
   url='https://gitlab.com/franksh/betterdicts',
   license='Apache-2.0',
-  keywords='prelude programming dict dictionary utility convenience',
+  keywords=["dict", "prelude", "utility", "convenience"],
   classifiers=[
     "Development Status :: 4 - Beta",
     "License :: OSI Approved :: Apache Software License",

@@ -5,6 +5,8 @@ These works like regular dictionaries but expose their keys as regular attribute
 """
 from betterdicts import betterdict
 
+__all__ = ('attr_dict', 'jsdict', 'njsdict', 'rjsdict',)
+
 
 class jsdict(betterdict):
   """:class:`jsdict` is a :class:`betterdict` which functions like a JavaScript object:
@@ -45,6 +47,22 @@ class jsdict(betterdict):
     self.__dict__ = self
 
 
+
+class attr_dict(betterdict):
+  """A slightly safer alternative to `jsdict`.
+
+  Dictionary values can still be accessed and set as attributes, but this won't
+  overwrite normal attributes.
+
+  """
+  __slots__ = ()
+  __getattr__ = betterdict.__getitem__
+
+  def __setattr__(self, attr, val):
+    self[attr] = val
+
+
+
 class njsdict(jsdict):
   """A :class:`jsdict` where attributes default to `None` instead of raising
   `AttributeError`.
@@ -71,4 +89,3 @@ class rjsdict(jsdict):
     return self.setdefault(key, rjsdict())
 
 
-__all__ = ('jsdict', 'njsdict', 'rjsdict',)

@@ -2,6 +2,8 @@ from betterdicts.codeio import CodeIO
 from betterdicts import betterdict
 from collections import abc, Counter
 
+# All the code generating nonsense is silly and unjustified here, because it was
+# copied out of some other project I had. It will be replaced.
 
 def mk_dict_bin_arith(name, expr, immediate=False, elidefalse=False, with_broadcast=True):
   src = CodeIO()

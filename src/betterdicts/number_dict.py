@@ -130,6 +130,16 @@ class number_dict(betterdict):
   __rtruediv__ = mk_dict_bin_arith('__rtruediv__', lambda x, y: f'{y} / {x}', with_broadcast=False)
   __rpow__ = mk_dict_bin_arith('__rpow__', lambda x, y: f'{y} ** {x}', with_broadcast=False)
 
+  __and__ = mk_dict_bin_arith('__and__', lambda x, y: f'{x} & {y}')
+  __or__ = mk_dict_bin_arith('__or__', lambda x, y: f'{x} | {y}')
+  __xor__ = mk_dict_bin_arith('__xor__', lambda x, y: f'{x} ^ {y}')
+  __iand__ = mk_dict_bin_arith('__iand__', lambda x, y: f'{x} & {y}', immediate=True)
+  __ior__ = mk_dict_bin_arith('__ior__', lambda x, y: f'{x} | {y}', immediate=True)
+  __ixor__ = mk_dict_bin_arith('__ixor__', lambda x, y: f'{x} ^ {y}', immediate=True)
+  __rand__ = mk_dict_bin_arith('__rand__', lambda x, y: f'{y} & {x}', with_broadcast=False)
+  __ror__ = mk_dict_bin_arith('__ror__', lambda x, y: f'{y} | {x}', with_broadcast=False)
+  __rxor__ = mk_dict_bin_arith('__rxor__', lambda x, y: f'{y} ^ {x}', with_broadcast=False)
+
   @classmethod
   def sum(cls, it):
     res = cls()

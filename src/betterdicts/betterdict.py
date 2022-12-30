@@ -7,6 +7,9 @@ filtering, mapping, and collating.
 
 import collections.abc
 
+# Useful for testing if a default is missing when None is valid.
+_MISSING = object()
+
 class hybridmethod(classmethod):
   """Similar to ``classmethod`` but also allows the function to works as a method.
 
@@ -21,7 +24,6 @@ class hybridmethod(classmethod):
 
 __all__ = ('betterdict',)
 
-_MISSING = object()
 
 
 class betterdict(dict):
@@ -448,3 +450,16 @@ class betterdict(dict):
     previous = dict.get(self, key, missing)
     self[key] = value
     return previous
+
+  def diff_keys(self, other):
+    """Full difference in keys between two dicts.
+
+    Returns three sets of keys `(added, modified, removed)`. The keys in `added`
+    have been added to `self` but are missing from `other`. The keys in
+    `modified` have _potentially_ been modified (they are present in both
+    dicts). The keys in `removed` are the ones that were present in `other` but
+    are missing from `self`.
+
+    """
+    cur, prev = self.keys(), other.keys()
+    return (cur - prev, cur & prev, prev - cur)

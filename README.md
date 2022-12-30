@@ -1,7 +1,24 @@
 # betterdicts
 
-A collection of dictionary and dictionary-like classes improving on the built-in
-`dict` type and providing some extra utility.
+A collection of dictionary and dictionary-like utility classes.
+
+The base type is `betterdict`, which only seeks to improve on the built-in
+`dict` type by providing some extra functionality.
+
+On top of this several other useful dictionaries have been built:
+
+- `stack_dict`: a multi-levelled dict whose state can be pushed and popped like
+  a stack.
+- `attr_dict` and `jsdict`: ergonomic dictionaries where attribute access
+  (`xs.key`) can be used in place of the usual square bracket syntax
+  (`xs["key"]`).
+- `persistent_dict`: a dict which automatically saves itself to disk with every
+  change, so it retains its state between script execution.
+- `dynamic_dict` and `cache_dict`: dictionaries that represent or act like a
+  memoized function.
+- `number_dict`: a dict on which arithmetic can be performed. Think of it as a
+  simple dict version of a NumPy array.
+
 
 ## betterdict
 
@@ -473,5 +490,50 @@ True
 *Warning:* Two separate `persistent_dict()` objects bound to the same file will
 not automatically stay in sync, instead they will keep overwriting each other's
 data!
+
+## stack_dict
+
+Stack dicts emulate how scopes or namespaces work. It allows you to repeatedly
+save the state of the dictonary (`push_stack()`) and later retore it
+(`pop_stack()`).
+
+``` python-console
+>>> from betterdicts import stack_dict
+>>> q=stack_dict(a=1,b=2)
+>>> q
+{'a': 1, 'b': 2}
+>>> q.push_stack()
+>>> q
+{'a': 1, 'b': 2}
+>>> q['c'] = 7
+>>> del q['a']
+>>> q
+{'b': 2, 'c': 7}
+>>> q.pop_stack()
+>>> q
+{'a': 1, 'b': 2}
+>>> q.push_stack(hello=0, world=-1)  # push_stack works like update()
+>>> q.push_stack(hello=1000, world=1000)
+>>> q
+{'a': 1, 'b': 2, 'hello': 1000, 'world': 1000}
+>>> q.pop_stack(); q
+{'a': 1, 'b': 2, 'hello': 0, 'world': -1}
+>>> q.pop_stack(); q
+{'a': 1, 'b': 2}
+```
+
+Stack dicts can also be used with `with`-blocks:
+
+``` python-console
+>>> from betterdicts import stack_dict
+>>> q = stack_dict({'a': 1, 'b': 2})
+>>> with q:
+...   q['c'] = 10
+...   print(q)
+... 
+{'a': 1, 'b': 2, 'c': 10}
+>>> q  # q is reset to its previous state after the `with`.
+{'a': 1, 'b': 2}
+```
 
 [^1]: "deep" changes, like modifying a mutable object in the dictionary are not detected

@@ -3,7 +3,7 @@ import pickle
 from pathlib import Path
 from functools import wraps
 
-from betterdicts import betterdict
+from betterdicts.betterdict import betterdict, _MISSING
 
 __all__ = ('persistent_dict',)
 
@@ -18,17 +18,15 @@ def make_wrapper(name, meth):
 
 class PersistentMeta(type):
   def __new__(cls, name, bases, ns):
-    for meth_name in '__setitem__ __delitem__ clear update pop popitem setdefault insert'.split():
+    for meth_name in '__setitem__ __delitem__ clear update pop popitem insert'.split():
       ns[meth_name] = make_wrapper(meth_name, getattr(betterdict, meth_name))
     return type.__new__(cls, name, bases, ns)
 
   def __call__(cls, *args, **kwargs):
     if cls is not persistent_dict:
-      print('not pers', args, kwargs)
       obj = cls.__new__(cls)
       obj.__init__(*args, **kwargs)
       return obj
-    print('pers')
 
     if args and isinstance(args[0], (str, Path)):
       pth = Path(args[0])
@@ -88,3 +86,9 @@ class persistent_dict(betterdict, metaclass=PersistentMeta):
     with self._path.open('wb') as fil:
       pickle.dump(dict(self), fil)
     return self
+
+  def setdefault(self, key, default=None, /):
+    if (val := self.get(key, _MISSING)) is _MISSING:
+      self[key] = val = default
+      self.save()
+    return val

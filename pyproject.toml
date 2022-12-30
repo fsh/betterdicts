@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "betterdicts"
-version = "0.4.4" # VERSION.py
+version = "0.5.0" # VERSION.py
 description = "Better dictionary types."
 authors = ["Frank S. Hestvik <tristesse@gmail.com>"]
 license = "Apache-2.0"
 readme = "README.md"
 homepage = "https://gitlab.com/franksh/betterdicts"
 repository = "https://gitlab.com/franksh/betterdicts"
-keywords = ["dict", "prelude", "utility", "convenience"]
+keywords = ["dict", "prelude", "utility", "convenience", "ergonomics", "persistent", "stack", "attributes"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "License :: OSI Approved :: Apache Software License",

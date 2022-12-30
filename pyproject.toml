@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "betterdicts"
-version = "0.4.2" # VERSION.py
+version = "0.4.4" # VERSION.py
 description = "Better dictionary types."
 authors = ["Frank S. Hestvik <tristesse@gmail.com>"]
 license = "Apache-2.0"

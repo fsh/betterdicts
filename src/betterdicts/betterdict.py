@@ -56,8 +56,8 @@ class betterdict(dict):
 
   Other notes:
 
-  - ``.copy_with_class()`` tries to create an instance of the same type as the
-    instance instead of returning a plain ``dict`` like ``dict.copy()``.
+  - ``.copy()`` tries to create a copy of the same class as ``self`` rather
+    than returning a plain ``dict`` object.
 
   """
 

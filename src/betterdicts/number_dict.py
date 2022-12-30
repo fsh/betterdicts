@@ -14,7 +14,7 @@ def mk_dict_bin_arith(name, expr, immediate=False, elidefalse=False, with_broadc
     src.print(f'if isinstance(other, self.__class__):')
     src.indent += 2
     if not immediate:
-      src.print(f'res = self.copy_with_class()')
+      src.print(f'res = self.copy()')
     src.print(f'for k in other.keys():')
     src.print(f'  if r := {expr("self[k]", "other[k]")}: {res}[k] = r' if elidefalse else
               f'  {res}[k] = {expr("self[k]", "other[k]")}')
